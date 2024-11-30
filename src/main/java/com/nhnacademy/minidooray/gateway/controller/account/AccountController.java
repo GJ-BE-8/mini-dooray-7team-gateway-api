@@ -49,12 +49,11 @@ public class AccountController {
         member.setEmail(memberCreateDto.getEmail());
 
         //todo 외부 AccountApi에 member 전송(ID 중복 여부 파악 및 데이터 베이스 업데이트를 위해)
-        accountApiClient.registerUser(member);
+        //외부 api에서 중복 없을시 true 반환
+        boolean result = accountApiClient.registerUser(member);
+
 
         //가입 성공 했다면 project로 이동, 실패시 다시 login으로 이동
-
-        boolean result = true;  //일단 임시
-
         if(result) {
             return "redirect:/project";
         }

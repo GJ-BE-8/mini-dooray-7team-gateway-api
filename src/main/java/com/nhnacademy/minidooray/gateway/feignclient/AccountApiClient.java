@@ -11,7 +11,7 @@ public interface AccountApiClient {
 
     // 사용자 회원가입 요청
     @PostMapping("/users")  // 외부 API에서 회원가입을 처리하는 엔드포인트 http://localhost:8081/accountapi/users에게 보냄
-    void registerUser(@RequestBody Member member);  // 요청 데이터를 User 객체로 받음
+    boolean registerUser(@RequestBody Member member);  // 요청 데이터를 User 객체로 받음
 
     // 사용자 로그인 인증 요청(사용자 아이디, 비밀번호 전송
     @PostMapping("/authenticate")  // 외부 API에서 로그인 인증을 처리하는 엔드포인트
