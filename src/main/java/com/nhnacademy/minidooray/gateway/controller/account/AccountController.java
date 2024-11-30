@@ -27,8 +27,12 @@ public class AccountController {
     @PostMapping("/signin")
     public String signIn(@ModelAttribute MemberLoginDto memberLoginDto, HttpSession session) {
         //todo 외부 AccountApi에 데이터 베이스 요청후에 security로 전달.
+
+        String id = memberLoginDto.getId();
+        String pwd = memberLoginDto.getPwd();
+
         //로그인 로직 처리 / 로그인 성공 또는 실패 시 리디렉션 등
-//        boolean isAuthenticated = accountApiClient.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
+        boolean isAuthenticated = accountApiClient.authenticateUser(id, pwd); //id , pwd 전송 인가 인증 요청
 //        athentication.context().
 
 
@@ -58,7 +62,6 @@ public class AccountController {
             return "redirect:/project";
         }
 
-        //가입이후 home으로 이동
         return "redirect:/login";
     }
 
