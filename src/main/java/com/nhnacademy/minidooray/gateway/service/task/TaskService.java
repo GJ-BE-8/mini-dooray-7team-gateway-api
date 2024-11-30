@@ -1,7 +1,7 @@
 package com.nhnacademy.minidooray.gateway.service.task;
 
-import com.nhnacademy.minidooray.gateway.domain.task.request.modify.ProjectUpdateRequest;
-import com.nhnacademy.minidooray.gateway.domain.task.response.read.ProjectList;
+import com.nhnacademy.minidooray.gateway.domain.project.request.modify.ProjectUpdate;
+import com.nhnacademy.minidooray.gateway.domain.project.response.read.ProjectList;
 import com.nhnacademy.minidooray.gateway.feignclient.TaskApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class TaskService {
         return taskApiClient.getTasks(userId);
     }
 
-    public ProjectUpdateRequest modifyProject(String projectId, ProjectUpdateRequest request) {
+    public ProjectUpdate modifyProject(String projectId, ProjectUpdate request) {
         return taskApiClient.updateProject(projectId, request);
     }
 }

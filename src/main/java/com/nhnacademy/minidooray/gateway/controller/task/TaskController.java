@@ -1,6 +1,6 @@
 package com.nhnacademy.minidooray.gateway.controller.task;
 
-import com.nhnacademy.minidooray.gateway.domain.task.request.modify.ProjectUpdateRequest;
+import com.nhnacademy.minidooray.gateway.domain.project.request.modify.ProjectUpdate;
 import com.nhnacademy.minidooray.gateway.service.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +17,12 @@ public class TaskController {
     }
 
     @GetMapping("/{userId}")
-    public ProjectUpdateRequest getTasks(@PathVariable String userId) {
+    public ProjectUpdate getTasks(@PathVariable String userId) {
         return taskService.fetchTasks(userId);
     }
 
     @PutMapping("/{projectId}")
-    public ProjectUpdateRequest updateProject(@PathVariable String projectId, @RequestBody ProjectUpdateRequest request) {
+    public ProjectUpdate updateProject(@PathVariable String projectId, @RequestBody ProjectUpdate request) {
         return taskService.modifyProject(projectId, request);
     }
 }
