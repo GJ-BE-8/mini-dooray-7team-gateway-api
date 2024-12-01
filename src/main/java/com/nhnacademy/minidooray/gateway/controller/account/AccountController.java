@@ -1,73 +1,74 @@
 package com.nhnacademy.minidooray.gateway.controller.account;
 
 import com.nhnacademy.minidooray.gateway.domain.member.model.Member;
-import com.nhnacademy.minidooray.gateway.domain.member.request.login.MemberLoginDto;
+import com.nhnacademy.minidooray.gateway.domain.member.model.MemberListDto;
+import com.nhnacademy.minidooray.gateway.domain.member.request.login.LoginRequestDto;
+import com.nhnacademy.minidooray.gateway.domain.member.request.modify.MemberRoleUpdateDto;
+import com.nhnacademy.minidooray.gateway.domain.member.request.modify.MemberStatusUpdateDto;
 import com.nhnacademy.minidooray.gateway.domain.member.request.register.MemberCreateDto;
 import com.nhnacademy.minidooray.gateway.feignclient.AccountApiClient;
-
-//import com.nhnacademy.minidooray.gateway.feign.AuthServiceClient;
-
-import jakarta.servlet.http.HttpSession;
+import com.nhnacademy.minidooray.gateway.service.account.AccountService;
+import com.nhnacademy.minidooray.gateway.service.account.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //인가 인증용 입력 데이터 외부 API에 전달 및 기타용 controller
 
 @Controller
 @Slf4j
-@RequestMapping("/login")
 public class AccountController {
 
+    private final AccountApiClient accountApiClient; // FeignClient를 사용하여 외부 API와 통신
+    private final AccountService accountService;
+
     @Autowired
-    private AccountApiClient accountApiClient; // FeignClient를 사용하여 외부 API와 통신
-
-    // 로그인 폼 제출 처리 security로 대부분 대체 예정
-    @PostMapping("/signin")
-    public String signIn(@ModelAttribute MemberLoginDto memberLoginDto, HttpSession session) {
-        //todo 외부 AccountApi에 데이터 베이스 요청후에 security로 전달.
-
-        String id = memberLoginDto.getId();
-        String pwd = memberLoginDto.getPwd();
-
-        //로그인 로직 처리 / 로그인 성공 또는 실패 시 리디렉션 등
-        boolean isAuthenticated = accountApiClient.authenticateUser(id, pwd); //id , pwd 전송 인가 인증 요청
-//        athentication.context().
-
-
-
-        //인증 요청 securityconfig가 담당
-
-        return "redirect:/";
+    public AccountController(AccountApiClient accountApiClient, AccountService accountService) {
+        this.accountApiClient = accountApiClient;
+        this.accountService = accountService;
     }
 
-    // 회원가입 폼 제출 처리
-    @PostMapping("/signup")
-    public String signUp(@ModelAttribute MemberCreateDto memberCreateDto, HttpSession session) {
-
-        // 회원가입
-        Member member = new Member();
-        member.setId(memberCreateDto.getId());
-        member.setPwd(memberCreateDto.getPwd());
-        member.setEmail(memberCreateDto.getEmail());
-
-        //todo 외부 AccountApi에 member 전송(ID 중복 여부 파악 및 데이터 베이스 업데이트를 위해)
-        //외부 api에서 중복 없을시 true 반환
-        boolean result = accountApiClient.registerUser(member);
 
 
-        //가입 성공 했다면 project로 이동, 실패시 다시 login으로 이동
-        if(result) {
-            return "redirect:/project";
-        }
+    // 사용자 전체 목록 조회
+    @GetMapping("/users")
+    public List<MemberListDto> getUsers(@RequestBody List<MemberListDto> memberListDtos) {
+        List<MemberListDto> memberListDtoList = memberListDtos;
 
-        return "redirect:/login";
+        return memberListDtoList;
     }
 
-    //TemplateEngine(Thymeleaf) 사용하여 login 화면을 표시
-    @GetMapping
-    public String loginPage() {
-        return "login";
+    @PostMapping("/users")
+    public MemberCreateDto register(@RequestBody MemberCreateDto memberCreateDto) {
+        return memberCreateDto;
     }
+
+
+    // 로그인
+    @PostMapping("/users/{user_id}/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) {
+//        LoginRequestDto loginRequest = userService.login(loginRequestDto.getUserId(), loginRequestDto.getPassword());
+        return ResponseEntity.ok(login(loginRequestDto));
+    }
+
+    // 사용자 역할 변경
+    @PutMapping("/users/{user_id}/role")
+    public ResponseEntity<?> updateRole(@RequestBody MemberRoleUpdateDto roleUpdateDto) {
+
+
+        return ResponseEntity.ok(roleUpdateDto);
+    }
+
+    // 사용자 상태 변경
+    @PutMapping("/users/{user_id}/status")
+    public ResponseEntity<?> updateStatus(@RequestBody MemberStatusUpdateDto statusUpdateDto) {
+        return ResponseEntity.ok(statusUpdateDto);
+    }
+
+
+
 }

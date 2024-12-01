@@ -7,6 +7,10 @@ public class CombinedResponse {
     //private AccountResponse account;
     //private TaskResponse tasks;
 
+
+
+
+
 //    public CombindResponse() {
 //
 //    }

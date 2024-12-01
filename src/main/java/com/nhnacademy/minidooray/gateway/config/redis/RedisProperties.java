@@ -1,4 +1,4 @@
-//package com.nhnacademy.minidooray.gateway.config.properties;
+//package com.nhnacademy.minidooray.gateway.config.redis;
 //
 //import lombok.Getter;
 //import lombok.Setter;
@@ -14,4 +14,4 @@
 //    Integer database;
 //    String password;
 //}
-//
+

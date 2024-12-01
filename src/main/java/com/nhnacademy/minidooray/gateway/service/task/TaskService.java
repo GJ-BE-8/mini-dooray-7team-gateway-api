@@ -2,9 +2,15 @@ package com.nhnacademy.minidooray.gateway.service.task;
 
 import com.nhnacademy.minidooray.gateway.domain.project.request.modify.ProjectUpdate;
 import com.nhnacademy.minidooray.gateway.domain.project.response.read.ProjectList;
+import com.nhnacademy.minidooray.gateway.domain.project.response.register.GetProject;
+import com.nhnacademy.minidooray.gateway.domain.task.TaskUpdateRequestDto;
+
 import com.nhnacademy.minidooray.gateway.feignclient.TaskApiClient;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 public class TaskService {
@@ -15,11 +21,8 @@ public class TaskService {
         this.taskApiClient = taskApiClient;
     }
 
-    public ProjectList fetchTasks(String userId) {
-        return taskApiClient.getTasks(userId);
-    }
-
-    public ProjectUpdate modifyProject(String projectId, ProjectUpdate request) {
-        return taskApiClient.updateProject(projectId, request);
+    public List<GetProject> getProjectsByUserId(String userId) {
+        return taskApiClient.getProject(userId);
     }
 }
+
